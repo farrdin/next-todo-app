@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
@@ -11,7 +11,7 @@ export default function Todo() {
   const [editText, setEditText] = useState("");
   const userEmail = session?.user?.email;
 
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
     if (!userEmail) return;
     try {
       const response = await axios.get("/api/todos", {
@@ -21,11 +21,11 @@ export default function Todo() {
     } catch (error) {
       console.error("Failed to fetch todos:", error);
     }
-  };
+  }, [userEmail]);
 
   useEffect(() => {
     fetchTodos();
-  });
+  }, [fetchTodos]);
 
   const addTodo = async () => {
     if (!userEmail) return;

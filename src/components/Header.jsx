@@ -50,8 +50,8 @@ const Header = () => {
             >
               <li>
                 <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  {session?.data?.user?.name}
+                  <span className="badge">Profile</span>
                 </a>
               </li>
               <li>
