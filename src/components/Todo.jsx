@@ -27,7 +27,6 @@ export default function Todo() {
     fetchTodos();
   });
 
-  // Add a new todo
   const addTodo = async () => {
     if (!userEmail) return;
     if (newTodo.trim() !== "") {
