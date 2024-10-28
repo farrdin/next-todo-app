@@ -1,3 +1,13 @@
+import TODO from "@/components/Todo";
+import bg from "../../public/bg1.jpg";
+
 export default function Home() {
-  return <div className="h-screen w-[80%] mx-auto text-center">Hello</div>;
+  return (
+    <div
+      className="h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${bg.src})` }}
+    >
+      <TODO />
+    </div>
+  );
 }

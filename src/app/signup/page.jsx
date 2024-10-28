@@ -2,11 +2,29 @@
 import Link from "next/link";
 
 const page = () => {
-  const handleSignUp = async () => {};
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const newUser = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      image: e.target.photo.value,
+      password: e.target.password.value,
+    };
+    const res = await fetch("http://localhost:3000/signup/api", {
+      method: "POST",
+      body: JSON.stringify(newUser),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (res.status === 200) {
+      e.target.reset();
+    }
+  };
 
   return (
     <div className="w-[30%] mx-auto my-10">
-      <div className="h-full p-4 rounded-md shadow sm:p-8 bg-backL dark:bg-backD text-headL dark:text-paraD font-raleway ">
+      <div className="h-full p-4 rounded-md shadow sm:p-8 bg-slate-300">
         <p className="text-sm text-center dark:text-gray-600 mb-10">
           Already have account?
           <Link

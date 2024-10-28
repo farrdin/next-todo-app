@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/services/AuthProvider";
+import bg from "../../public/bg.jpg";
 
 export const metadata = {
   title: "TODO APP",
@@ -10,10 +12,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
-      <body>
-        <Header />
-        {children}
-        <Footer />
+      <body
+        className="bg-cover bg-center"
+        style={{ backgroundImage: `url(${bg.src})` }}
+      >
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

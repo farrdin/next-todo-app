@@ -1,13 +1,36 @@
 "use client";
 import Link from "next/link";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const page = () => {
-  const handleLogin = async () => {};
+  const router = useRouter();
+  const session = useSession();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    if (res.status === 200) {
+      router.push("/");
+    }
+  };
+
+  const handleSocialLogin = async (provider) => {
+    const res = await signIn(provider, { redirect: false });
+  };
+  if (session.status === "authenticated") {
+    router.push("/");
+  }
 
   return (
     <div className="w-[30%] mx-auto my-10">
-      <div className="p-4 rounded-md shadow bg-backL dark:bg-backD text-headL dark:text-paraD font-raleway h-full">
+      <div className="p-4 rounded-md shadow bg-slate-300  h-full">
         <p className="text-sm text-center dark:text-gray-600">
           Dont have account?
           <Link
@@ -20,7 +43,7 @@ const page = () => {
         <div className="my-6 space-y-4">
           <button
             aria-label="Login with Google"
-            //   onClick={handleGoogleLogin}
+            onClick={() => handleSocialLogin("google")}
             type="button"
             className="flex items-center justify-center w-full p-4 space-x-4 border rounded-md focus:ring-2 focus:ring-offset-1 dark:border-gray-600 focus:dark:ring-violet-600  bg-butL dark:bg-butD hover:bg-butD hover:dark:bg-butL text-paraD dark:text-headL hover:dark:text-paraD hover:text-headL  "
           >
@@ -28,7 +51,7 @@ const page = () => {
             <p>Login with Google</p>
           </button>
           <button
-            //   onClick={handleGitHubLogin}
+            onClick={() => handleSocialLogin("github")}
             aria-label="Login with GitHub"
             role="button"
             className="flex items-center justify-center w-full p-4 space-x-4 border rounded-md focus:ring-2 focus:ring-offset-1 dark:border-gray-600 focus:dark:ring-violet-600  bg-butL dark:bg-butD hover:bg-butD hover:dark:bg-butL text-paraD dark:text-headL hover:dark:text-paraD hover:text-headL"
@@ -82,7 +105,7 @@ const page = () => {
               </a>
             </div>
           </div>
-          <button className="btn bg-butL dark:bg-butD hover:bg-butD hover:dark:bg-butL text-paraD dark:text-headL hover:dark:text-paraD hover:text-headL w-full px-8 py-3 font-semibold rounded-md">
+          <button className="btn  w-full px-8 py-3 font-semibold rounded-md">
             Sign in
           </button>
         </form>
