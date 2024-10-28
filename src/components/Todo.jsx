@@ -25,7 +25,7 @@ export default function Todo() {
 
   useEffect(() => {
     fetchTodos();
-  }, [userEmail]);
+  });
 
   // Add a new todo
   const addTodo = async () => {
