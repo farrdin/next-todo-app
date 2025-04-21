@@ -17,9 +17,6 @@ export const POST = async (request) => {
     });
     return Response.json({ message: "User Created" }, { status: 200 });
   } catch (err) {
-    return Response.json(
-      { message: "Something went wrong", err },
-      { status: 500 }
-    );
+    return Response.json({ message: err.message, err }, { status: 500 });
   }
 };

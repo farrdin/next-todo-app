@@ -46,7 +46,10 @@ const handler = NextAuth({
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  pages: { signIn: "/login" },
+  pages: {
+    signIn: "/login",
+    error: "/error",
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (account.provider === "google" || account.provider === "github") {

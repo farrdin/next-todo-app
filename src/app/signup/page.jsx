@@ -1,24 +1,43 @@
 "use client";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 const page = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const newUser = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      image: e.target.photo.value,
-      password: e.target.password.value,
-    };
-    const res = await fetch("http://localhost:3000/signup/api", {
+
+    const name = e.target?.name?.value;
+    const email = e.target?.email?.value;
+    const image = e.target?.photo?.value;
+    const password = e.target?.password?.value;
+
+    const newUser = { name, email, image, password };
+
+    // 1. Signup API
+    const res = await fetch("https://fardin-todoapp.vercel.app/api/signup", {
       method: "POST",
       body: JSON.stringify(newUser),
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       },
     });
-    if (res.status === 200) {
-      e.target.reset();
+
+    if (res.ok) {
+      // 2. Auto login with credentials
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.ok) {
+        // 3. Redirect manually after successful login
+        window.location.href = "/";
+      } else {
+        console.error("Auto login failed:", result);
+      }
+    } else {
+      console.error("Signup failed");
     }
   };
 
@@ -108,7 +127,10 @@ const page = () => {
               </a>
             </div>
           </div>
-          <button className="btn bg-butL dark:bg-butD hover:bg-butD hover:dark:bg-butL text-paraD dark:text-headL hover:dark:text-paraD hover:text-headL w-full px-8 py-3 font-semibold rounded-md  dark:bg-violet-600 dark:text-gray-50  ">
+          <button
+            type="submit"
+            className="btn bg-butL dark:bg-butD hover:bg-butD hover:dark:bg-butL text-paraD dark:text-headL hover:dark:text-paraD hover:text-headL w-full px-8 py-3 font-semibold rounded-md  dark:bg-violet-600 dark:text-gray-50  "
+          >
             Sign Up
           </button>
         </form>
